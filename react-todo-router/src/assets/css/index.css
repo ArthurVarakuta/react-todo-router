@@ -1,0 +1,130 @@
+/*#0F9B8E 60*/
+/*#343837 30*/
+/*#03719C 10*/
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Corben', Georgia, Times, serif;
+}
+p, div {
+    font-family: 'Nobile', Helvetica, Arial, sans-serif;
+}
+h1 {
+    text-shadow: 1px 1px 1px #ccc;
+}
+.div-that-you-want-to-stand-out {
+    box-shadow: 0 0 1em 1em #ccc;
+}
+body{
+    height: 100%;
+    overflow-y: hidden;
+}
+.header{
+    display: flex;
+    justify-content: center;
+    padding: 50px 20px 50px 20px;
+    background-color: #0F9B8E;
+}
+.header input{
+    width: 40%;
+}
+.header button{
+    margin-left:20px ;
+    padding: 10px 15px 10px 15px;
+    border-radius: 10px;
+    width: 5%;
+}
+.header input{
+    border-radius: 10px;
+}
+.btn:focus{
+    border: none;
+}
+                                                    /* CSS */
+ .button-1 {
+     background-color:#343837 ;
+     border-radius: 8px;
+     border-style: none;
+     box-sizing: border-box;
+     color: #FFFFFF;
+     cursor: pointer;
+     display: inline-block;
+     font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+     font-size: 14px;
+     font-weight: 500;
+     height: 40px;
+     line-height: 20px;
+     margin: 0;
+     outline: none;
+     padding: 10px 16px;
+     position: relative;
+     text-align: center;
+     text-decoration: none;
+ }
+
+.button-1:hover{
+    background-color: #03719C;
+    transform:scale(1.1, 1.1);
+    transition: all 0.3s ;
+}
+.button-1:after{
+    transform:scale(1, 1);
+    transition: all 0.3s ;
+
+}
+
+.navbar{
+    display: flex;
+    justify-content: center;
+    background-color: #343837;
+    color: white;
+padding: 40px;
+}
+.navbar-element{
+    border: 2px solid #03719C;
+    padding: 20px 50px 20px 50px;
+    margin: 0 50px 0 50px;
+border-radius: 8px;
+    cursor: pointer;
+}
+.navbar-element:hover{
+    background-color:#03719C ;
+    transform:scale(1.1, 1.1);
+    transition: all 0.3s ;
+
+}
+.tasks{
+    height: 100vh;
+    background-color: #535353;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px 20px 20px;
+}
+.task{
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    color: white;
+    border: 2px solid white;
+    padding: 20px 50px 20px 50px;
+    border-radius: 8px;
+}
+.task span{
+    margin: 0 20px 0 20px;
+}
+.button-2{
+    padding: 10px 15px 10px 15px;
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px;
+    line-height: 20px;
+    margin: 0;
+    outline: none;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+}
