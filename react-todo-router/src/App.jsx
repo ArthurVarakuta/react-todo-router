@@ -1,6 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import "./assets/css/reset.css";
 import "./assets/css/index.css";
+import TaskList from "./assets/Components/TaskList.jsx";
+import {
+    Route,
+    createBrowserRouter,
+    RouterProvider,
+    createRoutesFromElements,
+    Link, Outlet, Routes
+} from "react-router-dom";
+
 
 function App() {
     const input =   document.querySelector('.input-value');
@@ -8,6 +17,12 @@ function App() {
 
     const StoredItems = JSON.parse(localStorage.getItem("ITEMS"));
     const [items, setItems] = useState(StoredItems);
+
+    const StoredCompletedItems = JSON.parse(localStorage.getItem("COMPLETEDITEMS"));
+    const [completedItems, setCompletedItems] = useState(StoredCompletedItems);
+
+    const StoredDeletedItems = JSON.parse(localStorage.getItem("DELTEDITEMS"));
+    const [deletedItems, setDeletedItems] = useState(StoredDeletedItems);
 
     useEffect(() => {
         localStorage.setItem("ITEMS", JSON.stringify(items));
@@ -21,8 +36,17 @@ function App() {
         setItems(newItems);
     }
 
+    const router = createBrowserRouter(
+        createRoutesFromElements(
+            <Route path={"/"} element={<Root />}>
+                <Route index path="/planned" element={<TaskList items={items} deleteItem={deleteItem}/>}/>
+                <Route path="/completed" element={<TaskList items={completedItems} deleteItem={deleteItem}/>}/>
+                <Route path="/deleted" element={<TaskList items={deletedItems} deleteItem={deleteItem}/>}/>
+                </Route>))
+
     return (
     <>
+
       <div className="header">
           <input onChange={(e)=>{setInputValue(e.target.value)}} className={"input-value"} type="text"/>
           <button role={"button"} className={'button-1'} onClick={()=>{
@@ -32,28 +56,22 @@ function App() {
               }
           }}>+</button>
       </div>
-        <div className="navbar">
-            <div className={"navbar-element"}>Planned</div>
-            <div className={"navbar-element"}>Completed</div>
-            <div className={"navbar-element"}>Deleted</div>
-        </div>
-        <ul className="tasks">
-            <li className="task">
-                <button className={"button-2 btn btn-success"}>V</button>
-                <span>eat some milk</span>
-                <button className={"button-2 btn btn-danger"} >X</button>
-            </li>
-            {    items.map((item, index) => {
-                return <li key={index} className="task">
-            <button className={"button-2 btn btn-success"}>V</button>
-            <span>{item}</span>
-            <button className={"button-2 btn btn-danger"} onClick={()=>{deleteItem(index)}}>X</button>
-        </li>
-      })}
-
-        </ul>
+        <RouterProvider router={router}/>
     </>
   )
 }
+const Root=()=>{
+    return <>
 
+        <div className="navbar">
+            <Link to={"/planned"} ><div className={"navbar-element"}>Planned</div></Link>
+            <Link to={"/deleted"} ><div className={"navbar-element"}>Deleted</div></Link>
+            <Link to={"/completed"} ><div className={"navbar-element"}>Completed</div></Link>
+        </div>
+
+        <div>
+            <Outlet/>
+        </div>
+    </>
+}
 export default App
