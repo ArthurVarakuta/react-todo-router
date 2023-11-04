@@ -128,3 +128,8 @@ border-radius: 8px;
     text-align: center;
     text-decoration: none;
 }
+.link-router,
+.link-router:hover{
+    text-decoration: none;
+    color: white;
+}

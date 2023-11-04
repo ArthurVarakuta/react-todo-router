@@ -9,6 +9,8 @@ import {
     createRoutesFromElements,
     Link, Outlet, Routes
 } from "react-router-dom";
+import DeletedTaskList from "./assets/Components/DeletedTaskList.jsx";
+import CompletedTaskList from "./assets/Components/CompletedTaskList.jsx";
 
 
 function App() {
@@ -27,10 +29,17 @@ function App() {
     useEffect(() => {
         localStorage.setItem("ITEMS", JSON.stringify(items));
     }, [items]);
-
+    useEffect(() => {
+        localStorage.setItem("DELETEDITEMS", JSON.stringify(deletedItems));
+    }, [deletedItems]);
+    useEffect(() => {
+        localStorage.setItem("COMPLETEDITEMS", JSON.stringify(completedItems));
+    }, [completedItems]);
 
     function deleteItem(index) {
         const newItems = [...items];
+        const newDeletedItems = [...deletedItems];
+        localStorage.setItem("DELETEDITEMS", JSON.stringify());
         newItems.splice(index, 1);
         localStorage.setItem("ITEMS", JSON.stringify(newItems));
         setItems(newItems);
@@ -39,9 +48,9 @@ function App() {
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path={"/"} element={<Root />}>
-                <Route index path="/planned" element={<TaskList items={items} deleteItem={deleteItem}/>}/>
-                <Route path="/completed" element={<TaskList items={completedItems} deleteItem={deleteItem}/>}/>
-                <Route path="/deleted" element={<TaskList items={deletedItems} deleteItem={deleteItem}/>}/>
+                <Route path="/completed" element={<CompletedTaskList completedItems={completedItems} setCompletedItems={setCompletedItems} items={items} deleteItem={deleteItem}  />}/>
+                <Route index path="/planned" element={<TaskList items={items} setItems={setItems} setDeletedItems={setDeletedItems} deletedItems={deletedItems} completedItems={completedItems} setCompletedItems={setCompletedItems} deleteItem={deleteItem} />}/>
+                <Route path="/deleted" element={<DeletedTaskList deletedItems={deletedItems}  items={items} setItems={setItems} deleteItem={deleteItem} />}/>
                 </Route>))
 
     return (
@@ -64,9 +73,9 @@ const Root=()=>{
     return <>
 
         <div className="navbar">
-            <Link to={"/planned"} ><div className={"navbar-element"}>Planned</div></Link>
-            <Link to={"/deleted"} ><div className={"navbar-element"}>Deleted</div></Link>
-            <Link to={"/completed"} ><div className={"navbar-element"}>Completed</div></Link>
+            <Link className={"link-router"} to={"/completed"} ><div className={"navbar-element"}>Completed</div></Link>
+            <Link className={"link-router"} to={"/planned"} ><div className={"navbar-element"}>Planned</div></Link>
+            <Link className={"link-router"} to={"/deleted"} ><div className={"navbar-element"}>Deleted</div></Link>
         </div>
 
         <div>
