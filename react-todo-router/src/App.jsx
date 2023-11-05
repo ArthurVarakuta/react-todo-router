@@ -7,7 +7,7 @@ import {
     createBrowserRouter,
     RouterProvider,
     createRoutesFromElements,
-    Link, Outlet, Routes
+    Link, Outlet
 } from "react-router-dom";
 import DeletedTaskList from "./assets/Components/DeletedTaskList.jsx";
 import CompletedTaskList from "./assets/Components/CompletedTaskList.jsx";
@@ -18,13 +18,13 @@ function App() {
     const [inputValue, setInputValue] = useState(" ")
 
     const StoredItems = JSON.parse(localStorage.getItem("ITEMS"));
-    const [items, setItems] = useState(StoredItems);
+    const [items, setItems] = useState(StoredItems||[]);
 
     const StoredCompletedItems = JSON.parse(localStorage.getItem("COMPLETEDITEMS"));
-    const [completedItems, setCompletedItems] = useState(StoredCompletedItems);
+    const [completedItems, setCompletedItems] = useState(StoredCompletedItems||[]);
 
-    const StoredDeletedItems = JSON.parse(localStorage.getItem("DELTEDITEMS"));
-    const [deletedItems, setDeletedItems] = useState(StoredDeletedItems);
+    const StoredDeletedItems = JSON.parse(localStorage.getItem("DELETEDITEMS"));
+    const [deletedItems, setDeletedItems] = useState(StoredDeletedItems||[]);
 
     useEffect(() => {
         localStorage.setItem("ITEMS", JSON.stringify(items));
@@ -36,21 +36,33 @@ function App() {
         localStorage.setItem("COMPLETEDITEMS", JSON.stringify(completedItems));
     }, [completedItems]);
 
-    function deleteItem(index) {
+    function deleteItem(item,index) {
+        setDeletedItems([...deletedItems, item])
         const newItems = [...items];
-        const newDeletedItems = [...deletedItems];
-        localStorage.setItem("DELETEDITEMS", JSON.stringify());
         newItems.splice(index, 1);
         localStorage.setItem("ITEMS", JSON.stringify(newItems));
         setItems(newItems);
+    }
+    function deleteDeletedItem(index) {
+        const newDeletedItems = [...deletedItems];
+        newDeletedItems.splice(index, 1);
+        localStorage.setItem("DELETEDITEMS", JSON.stringify(newDeletedItems));
+        setDeletedItems(newDeletedItems);
+    }
+    function deleteCompletedItem(item,index) {
+        setItems([...completedItems,item])
+        const newCompletedItems = [...completedItems];
+        newCompletedItems.splice(index, 1);
+        localStorage.setItem("COMPLETEDITEMS", JSON.stringify(newCompletedItems));
+        setCompletedItems(newCompletedItems);
     }
 
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path={"/"} element={<Root />}>
-                <Route path="/completed" element={<CompletedTaskList completedItems={completedItems} setCompletedItems={setCompletedItems} items={items} deleteItem={deleteItem}  />}/>
+                <Route path="/completed" element={<CompletedTaskList completedItems={completedItems} setCompletedItems={setCompletedItems} items={items}  deleteCompletedItem={deleteCompletedItem}  />}/>
                 <Route index path="/planned" element={<TaskList items={items} setItems={setItems} setDeletedItems={setDeletedItems} deletedItems={deletedItems} completedItems={completedItems} setCompletedItems={setCompletedItems} deleteItem={deleteItem} />}/>
-                <Route path="/deleted" element={<DeletedTaskList deletedItems={deletedItems}  items={items} setItems={setItems} deleteItem={deleteItem} />}/>
+                <Route path="/deleted" element={<DeletedTaskList deletedItems={deletedItems}  items={items} setItems={setItems} deleteDeletedItem={deleteDeletedItem} />}/>
                 </Route>))
 
     return (
@@ -61,7 +73,8 @@ function App() {
           <button role={"button"} className={'button-1'} onClick={()=>{
               if (inputValue!==""){
                   setItems([...items,inputValue]);
-              setInputValue("")
+              setInputValue("");
+              input.innerHTML="";
               }
           }}>+</button>
       </div>
