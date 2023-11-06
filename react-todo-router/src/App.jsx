@@ -38,7 +38,12 @@ function App() {
 
 
     function completeDeletedItem(item,index){
-
+        setItems([...items,  item]);
+        localStorage.setItem("DELETEDITEMS", JSON.stringify(item));
+        const newDeletedItems = [...deletedItems];
+        newDeletedItems.splice(index, 1);
+        localStorage.setItem("DELETEDITEMS", JSON.stringify(newDeletedItems));
+        setDeletedItems(newDeletedItems);
     }
     function completeItem(item,index) {
         // добавиться в выполенные
@@ -70,19 +75,22 @@ function App() {
         setDeletedItems(newDeletedItems);
     }
     function deleteCompletedItem(item,index) {
+        setItems([...items,  item]);
+        localStorage.setItem("COMPLETEDITEMS", JSON.stringify(item));
         const newCompletedItems = [...completedItems];
-        setItems([...completedItems, item]);
         newCompletedItems.splice(index, 1);
         localStorage.setItem("COMPLETEDITEMS", JSON.stringify(newCompletedItems));
         setCompletedItems(newCompletedItems);
     }
+
+
 
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path={"/"} element={<Root />}>
                 <Route path="/completed" element={<CompletedTaskList completedItems={completedItems}  deleteCompletedItem={deleteCompletedItem}   completeCompletedItem={completeCompletedItem}  />}/>
                 <Route index path="/planned" element={<TaskList items={items} setItems={setItems} setDeletedItems={setDeletedItems} deletedItems={deletedItems} completedItems={completedItems} setCompletedItems={setCompletedItems} deleteItem={deleteItem} completeItem={completeItem} />}/>
-                <Route path="/deleted" element={<DeletedTaskList deletedItems={deletedItems}  items={items} setItems={setItems} deleteDeletedItem={deleteDeletedItem} />}/>
+                <Route path="/deleted" element={<DeletedTaskList deletedItems={deletedItems}  items={items} setItems={setItems} deleteDeletedItem={deleteDeletedItem} completeDeletedItem={completeDeletedItem} />}/>
                 </Route>))
 
     return (
