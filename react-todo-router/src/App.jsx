@@ -36,6 +36,26 @@ function App() {
         localStorage.setItem("COMPLETEDITEMS", JSON.stringify(completedItems));
     }, [completedItems]);
 
+
+    function completeDeletedItem(item,index){
+
+    }
+    function completeItem(item,index) {
+        // добавиться в выполенные
+        setCompletedItems([...completedItems, item]);
+        // убраться из текущего
+        const newItems = [...items];
+        newItems.splice(index,1);
+        //add localstorage izmeneniya
+        localStorage.setItem("ITEMS", JSON.stringify(newItems));
+        setItems(newItems);
+    }
+    function completeCompletedItem(index) {
+        const newCompletedItems = [...completedItems];
+        newCompletedItems.splice(index,1);
+        localStorage.setItem("COMPLETEDITEMS", JSON.stringify(newCompletedItems));
+        setCompletedItems(newCompletedItems);
+    }
     function deleteItem(item,index) {
         setDeletedItems([...deletedItems, item])
         const newItems = [...items];
@@ -50,8 +70,8 @@ function App() {
         setDeletedItems(newDeletedItems);
     }
     function deleteCompletedItem(item,index) {
-        setItems([...completedItems,item])
         const newCompletedItems = [...completedItems];
+        setItems([...completedItems, item]);
         newCompletedItems.splice(index, 1);
         localStorage.setItem("COMPLETEDITEMS", JSON.stringify(newCompletedItems));
         setCompletedItems(newCompletedItems);
@@ -60,8 +80,8 @@ function App() {
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path={"/"} element={<Root />}>
-                <Route path="/completed" element={<CompletedTaskList completedItems={completedItems} setCompletedItems={setCompletedItems} items={items}  deleteCompletedItem={deleteCompletedItem}  />}/>
-                <Route index path="/planned" element={<TaskList items={items} setItems={setItems} setDeletedItems={setDeletedItems} deletedItems={deletedItems} completedItems={completedItems} setCompletedItems={setCompletedItems} deleteItem={deleteItem} />}/>
+                <Route path="/completed" element={<CompletedTaskList completedItems={completedItems}  deleteCompletedItem={deleteCompletedItem}   completeCompletedItem={completeCompletedItem}  />}/>
+                <Route index path="/planned" element={<TaskList items={items} setItems={setItems} setDeletedItems={setDeletedItems} deletedItems={deletedItems} completedItems={completedItems} setCompletedItems={setCompletedItems} deleteItem={deleteItem} completeItem={completeItem} />}/>
                 <Route path="/deleted" element={<DeletedTaskList deletedItems={deletedItems}  items={items} setItems={setItems} deleteDeletedItem={deleteDeletedItem} />}/>
                 </Route>))
 
